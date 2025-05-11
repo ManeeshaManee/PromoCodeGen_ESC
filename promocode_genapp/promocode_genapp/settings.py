@@ -25,7 +25,7 @@ SECRET_KEY = 'django-insecure-83jht%+jhs+65%p$*58dt9cru8c7zc=q31l-=#+w0h-unhyh2%
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['*']
 
 
 # Application definition
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'promocode_gen',
 ]
 
 MIDDLEWARE = [
@@ -116,7 +117,11 @@ USE_TZ = True
 
 STATIC_URL = 'static/'
 
+# Optional (only if needed for production or special setup)
+STATICFILES_DIRS = [BASE_DIR / "static"]
+
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+

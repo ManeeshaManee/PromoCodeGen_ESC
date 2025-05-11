@@ -40,17 +40,12 @@ def scan_qr(request):
 
         # Send Email
         send_mail(
-            subject="Your 15% Promo Code!",
-            message=f"Hello {name},\n\nYour unique promo code is: {promo_code}\nUse it to get 15% off!",
-            from_email="promoqr@example.com",
-            recipient_list=[email],
+            "Your Promo Code!",
+            f"Hi {name}, your unique promo code for 15% off is: {promo_code}",
+            "promoqr@example.com",
+            [email],
         )
 
-        return render(request, 'form.html', {
-            'success': True,
-            'email': email,
-            'promo_code': promo_code
-        })
+        return render(request, 'form.html', {'success': True})
 
     return render(request, 'form.html')
-
