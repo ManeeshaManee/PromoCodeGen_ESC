@@ -4,7 +4,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>{% block title %}PromoQR{% endblock %}</title>
+  <title>The Collect Room | {% block title %}PromoQR{% endblock %}</title>
+  <link rel="icon" href="{% static 'images/1.png' %}" type="image/x-icon">
   <style>
     * {
       box-sizing: border-box;
@@ -22,7 +23,7 @@
     background-color: #000;
     color: #fff;
     width: 100%;
-    padding: 0.65rem 2.5rem;
+    padding: 0.65rem 1rem;
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -32,8 +33,9 @@
     top: 0;
     left: 0;
     overflow: hidden;
+    flex-wrap: wrap; /* ensures wrapping on smaller screens */
     }
-
+    
     .social-icons {
     display: flex;
     gap: 1.5rem;
@@ -49,26 +51,57 @@
     text-align: center;
     margin-left: -80px; /* adjust if needed to center text */
     }
-
-    /* .scrolling-text {
-    display: inline-block;
-    animation: scroll-left 15s linear infinite;
-    } */
     .scrolling-banner {
-    position: absolute;
-    left: 18rem; /* Start margin from left */
-    right: 0rem; /* End before social icons */
+    flex: 1;
     overflow: hidden;
+    margin-left: 5rem;
+    min-width: 0;
     }
 
     .scrolling-wrapper {
     white-space: nowrap;
     }
-
+    
     .scrolling-text {
     display: inline-block;
     animation: scroll-left 15s linear infinite;
     }
+    @media (max-width: 992px) {
+  .top-header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .scrolling-banner {
+    margin-left: 0;
+    margin-top: 0.5rem;
+    width: 100%;
+    overflow: hidden;
+  }
+
+  .scrolling-wrapper {
+    white-space: nowrap;
+    overflow: hidden;
+    width: 100%;
+  }
+
+  .scrolling-text {
+    font-size: 0.85rem;
+    white-space: nowrap;
+    display: inline-block;
+    animation: scroll-left 15s linear infinite;
+  }
+    }
+
+
+    .social-icons {
+        justify-content: flex-start;
+        padding-left: 1rem;
+        margin-bottom: 0.5rem;
+    }
+ 
+
+    
 
     @keyframes scroll-left {
     0% {
@@ -79,6 +112,20 @@
     }
     }
 
+    .logo-wrapper {
+    width: 100%;
+    background-color: #fff;
+    padding: 1.5rem 1rem 1rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    }
+
+    .logo-image {
+    max-width: 100%;
+    height: auto;
+    max-height: 60px;
+    }
 
 
     .container {
@@ -120,7 +167,7 @@
     }
 
     button {
-      background-color: #007bff;
+      background-color: #000;
       color: white;
       border: none;
       cursor: pointer;
@@ -128,34 +175,35 @@
     }
 
     button:hover {
-      background-color: #0056b3;
+      background-color: #000;
     }
 
     .success-message {
       text-align: center;
       margin-bottom: 1rem;
-      color: green;
+      color: rgb(0, 0, 0);
       font-size: 1.1rem;
-      background-color: #eaffea;
+      background-color: #d2d0d0;
       padding: 1.5rem;
       border-radius: 10px;
     }
+    
   </style>
 </head>
 <body>
 
     <div class="top-header">
         <div class="social-icons">
-          <a href="https://www.instagram.com/your_username" target="_blank">
+          <a href="https://www.instagram.com/thecollectroom/" target="_blank">
             <img src="{% static 'images/insta.png' %}" alt="Instagram">
           </a>
-          <a href="https://www.facebook.com/your_username" target="_blank">
+          <a href="https://www.facebook.com/Thecollectroom" target="_blank">
             <img src="{% static 'images/facebook.png' %}" alt="Facebook">
           </a>
-          <a href="https://www.tiktok.com/@your_username" target="_blank">
+          <a href="https://www.tiktok.com/@thecollectroom" target="_blank">
             <img src="{% static 'images/tiktok_.png' %}" alt="TikTok">
           </a>
-          <a href="https://www.youtube.com/@your_username" target="_blank">
+          <a href="https://www.youtube.com/channel/UCjr5E_A1k7cKaTcvGjjl44A" target="_blank">
             <img src="{% static 'images/youtube.png' %}" alt="YouTube">
           </a>
         </div>
@@ -169,6 +217,12 @@
             </div>
           </div>
         </div>
+        <div class="logo-wrapper">
+            <a href="/promo/scan/">
+                <img src="{% static 'images/logo_grey_italic.png' %}" alt="Logo" class="logo-image">
+              </a>
+          </div>
+          
       
       
   {% block content %}
@@ -176,3 +230,5 @@
 
 </body>
 </html>
+
+
