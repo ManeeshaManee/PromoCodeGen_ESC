@@ -1,0 +1,178 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>{% block title %}PromoQR{% endblock %}</title>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
+
+    html, body {
+      margin: 0;
+      padding: 0;
+      font-family: Arial, sans-serif;
+      background-color: #f4f6f8;
+      width: 100%;
+    }
+
+    .top-header {
+    background-color: #000;
+    color: #fff;
+    width: 100%;
+    padding: 0.65rem 2.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    font-size: 0.85rem;
+    font-weight: bold;
+    position: relative;
+    top: 0;
+    left: 0;
+    overflow: hidden;
+    }
+
+    .social-icons {
+    display: flex;
+    gap: 1.5rem;
+    }
+
+    .social-icons img {
+    width: 18px;
+    height: 18px;
+    }
+
+    .header-text {
+    flex-grow: 1;
+    text-align: center;
+    margin-left: -80px; /* adjust if needed to center text */
+    }
+
+    /* .scrolling-text {
+    display: inline-block;
+    animation: scroll-left 15s linear infinite;
+    } */
+    .scrolling-banner {
+    position: absolute;
+    left: 18rem; /* Start margin from left */
+    right: 0rem; /* End before social icons */
+    overflow: hidden;
+    }
+
+    .scrolling-wrapper {
+    white-space: nowrap;
+    }
+
+    .scrolling-text {
+    display: inline-block;
+    animation: scroll-left 15s linear infinite;
+    }
+
+    @keyframes scroll-left {
+    0% {
+        transform: translateX(100%);
+    }
+    100% {
+        transform: translateX(-100%);
+    }
+    }
+
+
+
+    .container {
+      background-color: #fff;
+      padding: 0.5rem;
+      border-radius: 12px;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 480px;
+      margin: 2rem auto;
+    }
+
+    h1 {
+      text-align: center;
+      margin-bottom: 1.5rem;
+      color: #333;
+      font-size: 1.4rem;
+    }
+
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+
+    input,
+    textarea,
+    button {
+      font-size: 1rem;
+      padding: 0.75rem;
+      margin-bottom: 1rem;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      width: 100%;
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: 80px;
+    }
+
+    button {
+      background-color: #007bff;
+      color: white;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    button:hover {
+      background-color: #0056b3;
+    }
+
+    .success-message {
+      text-align: center;
+      margin-bottom: 1rem;
+      color: green;
+      font-size: 1.1rem;
+      background-color: #eaffea;
+      padding: 1.5rem;
+      border-radius: 10px;
+    }
+  </style>
+</head>
+<body>
+
+    <div class="top-header">
+        <div class="social-icons">
+          <a href="https://www.instagram.com/your_username" target="_blank">
+            <img src="{% static 'images/insta.png' %}" alt="Instagram">
+          </a>
+          <a href="https://www.facebook.com/your_username" target="_blank">
+            <img src="{% static 'images/facebook.png' %}" alt="Facebook">
+          </a>
+          <a href="https://www.tiktok.com/@your_username" target="_blank">
+            <img src="{% static 'images/tiktok_.png' %}" alt="TikTok">
+          </a>
+          <a href="https://www.youtube.com/@your_username" target="_blank">
+            <img src="{% static 'images/youtube.png' %}" alt="YouTube">
+          </a>
+        </div>
+        <div class="scrolling-banner">
+            <div class="scrolling-wrapper"></div>
+            <div class="scrolling-text">
+              Free Shipping within UAE, T&C Apply&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              Delivers (1-2 Days)&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              100% Authenticity Guaranteed&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+              100% Genuine Products
+            </div>
+          </div>
+        </div>
+      
+      
+  {% block content %}
+  {% endblock %}
+
+</body>
+</html>

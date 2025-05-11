@@ -1,0 +1,10 @@
+{% extends "base.html" %}
+{% block title %}PromoQR Home{% endblock %}
+
+{% block content %}
+<div class="container" style="text-align: center; padding: 1rem;">
+  <h2>Scan This QR Code</h2>
+  <img src="data:image/png;base64,{{ qr_base64 }}" alt="QR Code" />
+  <p>Scan the QR to submit your promo details.</p>
+</div>
+{% endblock %}

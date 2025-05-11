@@ -1,0 +1,12 @@
+{% extends 'base.html' %}
+{% block title %}Success{% endblock %}
+{% block content %}
+  <div class="container">
+    <div class="success-message">
+      Your promo code <strong>{{ promo_code }}</strong> has already been sent to <strong>{{ email }}</strong>.
+    </div>
+    <p style="text-align:center;">
+      <a href="{% url 'scan_qr' %}">← Go back to form</a>
+    </p>
+  </div>
+{% endblock %}
