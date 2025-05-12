@@ -1,14 +1,26 @@
 {% extends 'base.html' %}
-{% block title %}The Collect Room | Get Your Promo Code{% endblock %}
+{% block title %}The Collect Room | Promo Code Sent{% endblock %}
 {% block content %}
-  <div class="container" style="padding-bottom:4rem;">
-    <div class="success-message">
-      Your promo code <strong>{{ promo_code }}</strong> has already been sent to <strong>{{ email }}</strong>.
+<div class="container" style="padding: 3rem 1rem; text-align: center; max-width: 600px; margin: 0 auto;">
+  
+  {% if already_exists %}
+    <div class="success-message" style="background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; padding: 1.5rem; border-radius: 8px;">
+      You’ve already requested a code in the last 30 days. Here's your existing promo code:
+      <div style="font-size: 2rem; font-weight: bold; margin-top: 1rem;">{{ promo_code }}</div>
+      <p style="margin-top: 1rem;">It’s been sent again to <strong>{{ email }}</strong>.</p>
     </div>
-    <div style="text-align: center; margin-top: 1rem; ">
-      <a href="{% url 'scan_qr' %}" style="display: inline-block; padding: 0.75rem 1.5rem; background-color: #000; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold;">
-        ← Go back to form
-      </a>
+  {% else %}
+    <div class="success-message" style="background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 1.5rem; border-radius: 8px;">
+      Success! 🎉 Your promo code is:
+      <div style="font-size: 2rem; font-weight: bold; margin-top: 1rem;">{{ promo_code }}</div>
+      <p style="margin-top: 1rem;">It has been sent to <strong>{{ email }}</strong>.</p>
     </div>
+  {% endif %}
+
+  <div style="margin-top: 2rem;">
+    <a href="{% url 'scan_qr' %}" style="display: inline-block; padding: 0.75rem 1.5rem; background-color: #000; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold;">
+      ← Go back to form
+    </a>
   </div>
+</div>
 {% endblock %}
