@@ -112,7 +112,7 @@ def generate_promo_code():
     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
 
 def home(request):
-    qr_data = request.build_absolute_uri('/promo/scan/')
+    qr_data = request.build_absolute_uri('/scan/')
     qr_image = generate_qr(qr_data)
     qr_base64 = base64.b64encode(qr_image).decode('utf-8')
     return render(request, 'home.html', {'qr_base64': qr_base64})
