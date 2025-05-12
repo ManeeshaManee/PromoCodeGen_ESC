@@ -10,6 +10,9 @@ from django.core.mail import EmailMultiAlternatives
 from django.utils import timezone
 from django.template.loader import render_to_string
 from .models import PromoSubmission
+from django_countries import countries  # Install via pip if not available
+
+
 def generate_qr(data):
     qr = qrcode.make(data)
     buf = io.BytesIO()
@@ -30,7 +33,10 @@ def home(request):
     qr_base64 = base64.b64encode(qr_image).decode('utf-8')
     return render(request, 'home.html', {'qr_base64': qr_base64})
 
+
 def scan_qr(request):
+    country_list = [c.name for c in list(countries)]
+
     if request.method == 'POST':
         name = request.POST.get('name', '').strip()
         email = request.POST.get('email', '').strip()
@@ -53,6 +59,7 @@ def scan_qr(request):
                 'email': email,
                 'contact': contact,
                 'address': address,
+                'countries': country_list,
             })
 
         existing = PromoSubmission.objects.filter(email=email).first()
@@ -94,7 +101,8 @@ def scan_qr(request):
         request.session['already_exists'] = False
         return redirect('submission_success')
 
-    return render(request, 'form.html')
+    return render(request, 'form.html', {'countries': country_list})
+
 
 def submission_success(request):
     email = request.session.get('email')

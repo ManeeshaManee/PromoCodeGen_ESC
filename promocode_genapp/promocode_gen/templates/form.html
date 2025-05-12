@@ -1,23 +1,122 @@
-{% extends 'base.html' %}
-{% block title %}The Collect Room | Get Your Promo Code{% endblock %}
+{% extends "base.html" %}
+{% load static %}
+
+{% block title %}Scan QR{% endblock %}
+
 {% block content %}
+<style>
+  .error-text {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 2px;
+  }
+
+  .form-field {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1rem;
+  }
+
+  input, select {
+    padding: 8px;
+    font-size: 1rem;
+  }
+
+  button {
+    padding: 10px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+  }
+</style>
+
 <div class="container">
-  <h1>Get Your 15% Promo Code</h1>
-  {% if success %}
-  <div class="success-message">
-    Your promo code <strong>{{ promo_code }}</strong> has been sent to <strong>{{ email }}</strong>.
-  </div>
-  {% endif %}
-  <form method="POST">
+  <h1>Submit Your Details</h1>
+
+  <form method="POST" novalidate>
     {% csrf_token %}
-    <input type="text" name="name" placeholder="Name*" required value="{{ name|default:'' }}" />
-    <input type="email" name="email" placeholder="Email*" required value="{{ email|default:'' }}" />
-    {% if errors.email %}<div style="color:red;">{{ errors.email }}</div>{% endif %}
-    <input type="text" name="contact" placeholder="Contact Number* (+971XXXXXXXXX)" required value="{{ contact|default:'' }}" />
-    {% if errors.contact %}<div style="color:red;">{{ errors.contact }}</div>{% endif %}
-    <input type="text" name="address" placeholder="Country*" required value="{{ address|default:'' }}" />
-    {% if errors.address %}<div style="color:red;">{{ errors.address }}</div>{% endif %}
+
+    <!-- Name Field -->
+    <div class="form-field">
+      <input type="text" name="name" placeholder="Your Name" value="{{ name|default:'' }}" required />
+      {% if errors.name %}
+        <div class="error-text">{{ errors.name }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Email Field -->
+    <div class="form-field">
+      <input type="email" name="email" placeholder="Your Email" value="{{ email|default:'' }}" required />
+      {% if errors.email %}
+        <div class="error-text">{{ errors.email }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Contact Field -->
+    <div class="form-field">
+      <input type="text" name="contact" placeholder="Your Contact Number" value="{{ contact|default:'' }}" required />
+      {% if errors.contact %}
+        <div class="error-text">{{ errors.contact }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Country Dropdown -->
+    <div class="form-field">
+      <select name="address" id="country-select" required>
+        <option value="">Select Country</option>
+        {% for country in countries %}
+          <option value="{{ country }}" {% if address == country %}selected{% endif %}>{{ country }}</option>
+        {% endfor %}
+      </select>
+      {% if errors.address %}
+        <div class="error-text">{{ errors.address }}</div>
+      {% endif %}
+    </div>
+
+    <!-- Submit -->
     <button type="submit">Submit</button>
   </form>
 </div>
+
+<!-- Include jQuery and Select2 -->
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+<script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+<script>
+  $(document).ready(function () {
+    // Initialize Select2
+    $('#country-select').select2({
+      placeholder: 'Select a country',
+      width: '100%'
+    });
+
+    // Real-time validation
+    $('input[name="email"]').on('input', function () {
+      const email = $(this).val();
+      const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      showValidationMessage(this, pattern.test(email), "Enter a valid Email ID");
+    });
+
+    $('input[name="contact"]').on('input', function () {
+    const contact = $(this).val();
+    const pattern = /^\+\d{1,3}\d{6,12}$/;
+    showValidationMessage(this, pattern.test(contact), "Enter a valid number (e.g., +971543210987)");
+  });
+
+
+    $('input[name="name"]').on('input', function () {
+      const name = $(this).val();
+      const pattern = /^[A-Za-z\s]+$/;
+      showValidationMessage(this, pattern.test(name), "Only letters and spaces allowed");
+    });
+
+    function showValidationMessage(inputElement, isValid, message) {
+      const $input = $(inputElement);
+      $input.next('.error-text').remove(); // Remove existing error
+      if (!isValid && $input.val().length > 0) {
+        $input.after(`<div class="error-text">${message}</div>`);
+      }
+    }
+  });
+</script>
 {% endblock %}
