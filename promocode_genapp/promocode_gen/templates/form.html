@@ -18,15 +18,82 @@
   }
 
   input, select {
-    padding: 8px;
+    padding: 0.75rem;
     font-size: 1rem;
+    border-radius: 8px;
+    border: 1px solid #ccc;
+    width: 100%;
   }
 
   button {
     padding: 10px 20px;
     font-size: 1rem;
     cursor: pointer;
+    background-color: #000;
+    color: white;
+    border: none;
+    border-radius: 8px;
   }
+
+  button:hover {
+    background-color: #333;
+  }
+
+  .phone-group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+  }
+
+  .phone-group select {
+  position: relative;
+  top: -3px; /* Adjust this value as needed */
+}
+
+
+  .phone-group {
+  display: flex;
+  gap: 0.5rem;
+  align-items: baseline;
+}
+
+
+.phone-group select,
+.phone-group input {
+  height: 40px;
+  font-size: 1rem;
+  border-radius: 8px;
+  border: 1px solid #ccc;
+}
+
+/* Width ratios */
+#country-code-select + .select2-container {
+  flex: 1; /* Small width */
+  max-width: 165px;
+}
+
+.phone-group input[name="contact"] {
+  flex: 3; /* Larger width */
+}
+
+/* Adjust Select2 styles */
+#country-code-select + .select2-container .select2-selection--single {
+  height: 40px !important;
+  padding: 4px 8px !important;
+  font-size: 1rem;
+  display: flex;
+  align-items: center;
+}
+
+#country-code-select + .select2-container .select2-selection__rendered {
+  line-height: 28px !important;
+}
+
+#country-code-select + .select2-container .select2-selection__arrow {
+  height: 40px !important;
+}
+
+
 </style>
 
 <div class="container">
@@ -51,13 +118,19 @@
       {% endif %}
     </div>
 
-    <!-- Contact Field -->
+    <!-- Contact Number with Country Code -->
     <div class="form-field">
-      <input type="text" name="contact" placeholder="Your Contact Number" value="{{ contact|default:'' }}" required />
+      <div class="phone-group">
+        <select id="country-code-select" name="country_code" required>
+          <option value="">Country Code</option>
+        </select>
+        <input type="text" name="contact" placeholder="Phone Number" value="{{ contact|default:'' }}" required />
+      </div>
       {% if errors.contact %}
         <div class="error-text">{{ errors.contact }}</div>
       {% endif %}
     </div>
+    
 
     <!-- Country Dropdown -->
     <div class="form-field">
@@ -77,20 +150,67 @@
   </form>
 </div>
 
-<!-- Include jQuery and Select2 -->
+<!-- jQuery and Select2 -->
 <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
 <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
 <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
 
 <script>
+  const countryCodes = [
+    { code: "+1", name: "United States" },
+    { code: "+44", name: "United Kingdom" },
+    { code: "+91", name: "India" },
+    { code: "+971", name: "United Arab Emirates" },
+    { code: "+61", name: "Australia" },
+    { code: "+81", name: "Japan" },
+    { code: "+86", name: "China" },
+    { code: "+49", name: "Germany" },
+    { code: "+33", name: "France" },
+    { code: "+55", name: "Brazil" },
+    { code: "+7", name: "Russia" },
+    { code: "+34", name: "Spain" },
+    { code: "+27", name: "South Africa" },
+    { code: "+82", name: "South Korea" },
+    { code: "+39", name: "Italy" },
+    { code: "+62", name: "Indonesia" },
+    { code: "+234", name: "Nigeria" },
+    { code: "+92", name: "Pakistan" },
+    { code: "+964", name: "Iraq" },
+    { code: "+20", name: "Egypt" },
+    { code: "+98", name: "Iran" },
+    { code: "+90", name: "Turkey" },
+    { code: "+66", name: "Thailand" },
+    { code: "+63", name: "Philippines" },
+    { code: "+880", name: "Bangladesh" },
+    { code: "+31", name: "Netherlands" },
+    { code: "+351", name: "Portugal" },
+    { code: "+420", name: "Czech Republic" },
+    { code: "+48", name: "Poland" },
+    { code: "+46", name: "Sweden" },
+    { code: "+41", name: "Switzerland" }
+    // Add more if needed
+  ];
+
   $(document).ready(function () {
-    // Initialize Select2
+    // Populate country code dropdown
+    const $codeSelect = $('#country-code-select');
+    const currentCode = '{{ country_code|default:"" }}';
+    countryCodes.forEach(({ code, name }) => {
+      const selected = currentCode === code ? 'selected' : '';
+      $codeSelect.append(`<option value="${code}" ${selected}>${code} (${name})</option>`);
+    });
+
     $('#country-select').select2({
       placeholder: 'Select a country',
       width: '100%'
     });
 
-    // Real-time validation
+    $('#country-code-select').select2({
+      placeholder: 'Select country code',
+      width: '100%'
+    });
+
+    // Validation
     $('input[name="email"]').on('input', function () {
       const email = $(this).val();
       const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -98,11 +218,10 @@
     });
 
     $('input[name="contact"]').on('input', function () {
-    const contact = $(this).val();
-    const pattern = /^\+\d{1,3}\d{6,12}$/;
-    showValidationMessage(this, pattern.test(contact), "Enter a valid number (e.g., +971543210987)");
-  });
-
+      const number = $(this).val();
+      const pattern = /^[0-9]{6,12}$/;
+      showValidationMessage(this, pattern.test(number), "Enter a valid phone number");
+    });
 
     $('input[name="name"]').on('input', function () {
       const name = $(this).val();
@@ -112,7 +231,7 @@
 
     function showValidationMessage(inputElement, isValid, message) {
       const $input = $(inputElement);
-      $input.next('.error-text').remove(); // Remove existing error
+      $input.next('.error-text').remove();
       if (!isValid && $input.val().length > 0) {
         $input.after(`<div class="error-text">${message}</div>`);
       }
