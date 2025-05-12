@@ -1,11 +1,11 @@
 {% extends 'base.html' %}
 {% block title %}The Collect Room | Get Your Promo Code{% endblock %}
 {% block content %}
-  <div class="container">
+  <div class="container" style="padding-bottom:4rem;">
     <div class="success-message">
       Your promo code <strong>{{ promo_code }}</strong> has already been sent to <strong>{{ email }}</strong>.
     </div>
-    <div style="text-align: center; margin-top: 1rem;">
+    <div style="text-align: center; margin-top: 1rem; ">
       <a href="{% url 'scan_qr' %}" style="display: inline-block; padding: 0.75rem 1.5rem; background-color: #000; color: #fff; text-decoration: none; border-radius: 8px; font-weight: bold;">
         ← Go back to form
       </a>
