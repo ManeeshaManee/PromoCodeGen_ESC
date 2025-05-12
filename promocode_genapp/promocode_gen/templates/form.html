@@ -3,19 +3,21 @@
 {% block content %}
 <div class="container">
   <h1>Get Your 15% Promo Code</h1>
-
   {% if success %}
   <div class="success-message">
     Your promo code <strong>{{ promo_code }}</strong> has been sent to <strong>{{ email }}</strong>.
   </div>
   {% endif %}
-
   <form method="POST">
     {% csrf_token %}
-    <input type="text" name="name" placeholder="Name*" required />
-    <input type="email" name="email" placeholder="Email*" required />
-    <input type="text" name="contact" placeholder="Contact Number*" required />
-    <input name="address" placeholder="Country*" required></textarea>
+    <input type="text" name="name" placeholder="Name*" required value="{{ name|default:'' }}" />
+    
+    <input type="email" name="email" placeholder="Email*" required value="{{ email|default:'' }}" />
+    {% if errors.email %}<div style="color:red;">{{ errors.email }}</div>{% endif %}
+    <input type="text" name="contact" placeholder="Contact Number*" required value="{{ contact|default:'' }}" />
+    {% if errors.contact %}<div style="color:red;">{{ errors.contact }}</div>{% endif %}
+    <input type="text" name="address" placeholder="Country*" required value="{{ address|default:'' }}" />
+    {% if errors.address %}<div style="color:red;">{{ errors.address }}</div>{% endif %}
     <button type="submit">Submit</button>
   </form>
 </div>
