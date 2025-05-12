@@ -52,14 +52,38 @@ def scan_qr(request):
             address=address,
             promo_code=promo_code
         )
+    
+
 
         # Send email
         send_mail(
-            "Your Promo Code!",
+            "🎉 Your Exclusive 15% Off Promo Code! - The Collect Room!",
             f"Hi {name}, your unique promo code for 15% off is: {promo_code}",
             "promoqr@example.com",
             [email],
         )
+
+        
+
+       
+
+        # send_mail(
+        #     subject="🎉 Your Exclusive 15% Off Promo Code! - The Collect Room",
+        #     message=(
+        #         f"Hi {name},\n\n"
+        #         "Thank you for being with us! Here is your unique promo code for 15% off:\n\n"
+        #         f"👉 {promo_code}\n\n"
+        #         "Use this code at checkout to enjoy your discount.\n\n"
+        #         "Cheers,\n"
+        #         "The Collect Room"
+        #     ),
+        #     from_email="promoqr@example.com",
+        #     recipient_list=[email],
+        # )
+        
+
+
+        
 
         request.session['email'] = email
         request.session['promo_code'] = promo_code

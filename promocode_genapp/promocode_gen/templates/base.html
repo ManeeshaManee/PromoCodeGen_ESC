@@ -5,7 +5,7 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>The Collect Room | {% block title %}PromoQR{% endblock %}</title>
-  <link rel="icon" href="{% static 'images/1.png' %}" type="image/png" >
+  <link rel="icon" href="{% static 'images/icon_1.png' %}" type="image/png" >
 
   <style>
     * {
@@ -19,6 +19,7 @@
       background-color: #f4f6f8;
       width: 100%;
     }
+    
 
     .top-header {
     background-color: #000;
@@ -150,6 +151,7 @@
       display: flex;
       flex-direction: column;
     }
+    
 
     input,
     textarea,
@@ -189,6 +191,150 @@
       border-radius: 10px;
     }
     
+    /* Page content should leave space for the footer */
+    .page-content {
+    padding-bottom: 80px; /* same height as the footer */
+    }
+
+    /* Footer styling */
+    .site-footer {
+    background-color: #000;
+    color: #fff;
+    padding: 1rem 0;
+    padding-bottom: 0rem;
+    width: 100%;
+    z-index: 100;
+    flex-shrink: 0;
+    }
+
+    /* Add height to footer so layout can account for it */
+    .footer-layout {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 0.001rem;
+    margin-left: 2rem;
+    padding-bottom: 0rem;
+    }
+
+    .footer-box {
+    flex: 1 1 30%;
+    padding: 0.3rem;
+    text-align:left;
+    color: #fff;
+    font-size: 0.85rem;
+    }
+
+    .footer-box-news {
+    margin-top: 2rem; 
+    flex: 1 1 30%;
+    padding: 0rem;
+    text-align: left;
+    color: #fff;
+    }
+    
+    .footer-box a {
+    color: #fff;
+    text-decoration: none;
+    }
+    .footer-box form input,
+    .footer-box form button {
+    font-size: 0.9rem;
+    }
+    
+
+    /* Responsive stack for small screens */
+    @media (max-width: 768px) {
+    .footer-box {
+        flex: 1 0 100%;
+        margin-left: 0rem; 
+        padding-left: 0rem;
+
+    }
+
+    .footer-layout {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 0.001rem;
+    margin-left: 0rem
+    }
+    }
+
+    /* Prevent overlap by padding main content */
+    body {
+    padding-bottom: 0px; /* Adjust based on footer height */
+    }
+
+    @media only screen and (min-width: 500px) and (max-width: 2000px) and (orientation: portrait) {
+    .footer-box {
+        flex: 1 1 100%;
+        margin-left: 0rem;
+        margin-bottom: 4rem;
+        font-size: 1.5rem;
+    }
+    }
+   
+
+
+
+    .footer-layout {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 0.001rem;
+    margin-left: 2rem
+    }
+    .footer-bottom {
+    padding: 2rem 1rem 1rem;
+    text-align: center;
+    background-color: #000;
+    color: white;
+    }
+
+    .footer-divider {
+    width: 100%;
+    max-width: 2700px;
+    margin: 0 auto 1rem;
+    border: none;
+    border-top: 1px solid white;
+    padding-left: 0rem;
+    }
+
+    .footer-logo-container {
+    margin-bottom: 1rem;
+    }
+
+    .footer-logo {
+    max-width: 100%;
+    width: 250px;
+    height: auto;
+    }
+
+    .footer-copy {
+    font-size: 0.9rem;
+    padding-bottom: 1rem;
+    }
+
+    /* Optional: Better responsiveness for smaller screens */
+    @media (max-width: 600px) {
+    .footer-logo {
+        width: 180px;
+    }
+
+    .footer-copy {
+        font-size: 0.8rem;
+    }
+    }
+
+    
+
   </style>
 </head>
 <body>
@@ -222,14 +368,15 @@
             <a href="/promo/scan/">
                 <img src="{% static 'images/logo_grey_italic.png' %}" alt="Logo" class="logo-image">
               </a>
-          </div>
+         </div>
           
       
-  {% include 'footer.html' %}     
+    
   {% block content %}
   {% endblock %}
-
+  {% include 'footer.html' %}         
 </body>
 </html>
+
 
 
