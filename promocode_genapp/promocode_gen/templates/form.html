@@ -11,10 +11,9 @@
   <form method="POST">
     {% csrf_token %}
     <input type="text" name="name" placeholder="Name*" required value="{{ name|default:'' }}" />
-    
     <input type="email" name="email" placeholder="Email*" required value="{{ email|default:'' }}" />
     {% if errors.email %}<div style="color:red;">{{ errors.email }}</div>{% endif %}
-    <input type="text" name="contact" placeholder="Contact Number*" required value="{{ contact|default:'' }}" />
+    <input type="text" name="contact" placeholder="Contact Number* (+971XXXXXXXXX)" required value="{{ contact|default:'' }}" />
     {% if errors.contact %}<div style="color:red;">{{ errors.contact }}</div>{% endif %}
     <input type="text" name="address" placeholder="Country*" required value="{{ address|default:'' }}" />
     {% if errors.address %}<div style="color:red;">{{ errors.address }}</div>{% endif %}
