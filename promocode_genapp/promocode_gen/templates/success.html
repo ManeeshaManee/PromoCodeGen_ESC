@@ -5,9 +5,8 @@
   
   {% if already_exists %}
     <div class="success-message" style="background-color: #fff3cd; color: #856404; border: 1px solid #ffeeba; padding: 1.5rem; border-radius: 8px;">
-      You’ve already requested a code in the last 30 days. Here's your existing promo code:
-      <div style="font-size: 2rem; font-weight: bold; margin-top: 1rem;">{{ promo_code }}</div>
-      <p style="margin-top: 1rem;">It’s been sent again to <strong>{{ email }}</strong>.</p>
+      You’ve already generated a promo code in the last 30 days.
+      <p style="margin-top: 1rem;">It’s been sent to <strong>{{ email }}</strong>.Kindly check your inbox</p>
     </div>
     {% else %}
     <div class="success-message" style="background-color: #d4edda; color: #155724; border: 1px solid #c3e6cb; padding: 1.5rem; border-radius: 8px;">

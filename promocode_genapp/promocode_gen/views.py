@@ -83,7 +83,7 @@ def scan_qr(request):
         )
 
         subject = "Your Promo Code!"
-        from_email = "promoqr@example.com"
+        from_email = "digital@thecollectroom.com"
         to_email = [email]
 
         text_content = f"Hi {name}, your promo code is: {promo_code}"
