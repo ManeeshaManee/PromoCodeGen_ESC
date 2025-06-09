@@ -4,13 +4,22 @@ import random
 import string
 import base64
 import re
+import os
 from datetime import timedelta
 from django.shortcuts import render, redirect
-from django.core.mail import EmailMultiAlternatives
 from django.utils import timezone
 from django.template.loader import render_to_string
 from .models import PromoSubmission
 from django_countries import countries  # Install via pip if not available
+
+import sendgrid
+from sendgrid.helpers.mail import Mail, Email, To, Content
+
+from sendgrid import SendGridAPIClient
+from sendgrid.helpers.mail import Mail, Email, To, Content, Attachment, FileContent, FileName, FileType, Disposition
+from django.template.loader import render_to_string
+import base64
+import os
 
 
 def generate_qr(data):
@@ -18,14 +27,71 @@ def generate_qr(data):
     buf = io.BytesIO()
     qr.save(buf, format='PNG')
     return buf.getvalue()
+
+# def generate_promo_code():
+#     return ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
 def generate_promo_code():
-    return ''.join(random.choices(string.ascii_uppercase + string.digits, k=8))
+    return "TFP15"
+
+
 def is_valid_email(email):
     return re.match(r'^[\w\.-]+@[\w\.-]+\.\w+$', email)
+
 def is_valid_contact(contact):
     return re.match(r'^\+?\d{7,15}$', contact)  # Supports optional '+' and 7-15 digits
+
 def is_valid_country(country):
     return bool(country.strip())  # Just ensure it's not empty or whitespace
+
+
+def send_promo_email(name, email, promo_code):
+    SENDGRID_API_KEY = ''
+    subject = "Your Promo Code!"
+    from_email = "digital@thecollectroom.com"  # Must be verified in SendGrid
+
+    html_content = render_to_string('promo_email.html', {
+        'name': name,
+        'promo_code': promo_code,
+    })
+    plain_content = f"Hi {name}, your promo code is: {promo_code}"
+
+    message = Mail(
+        from_email=Email(from_email),
+        to_emails=To(email),
+        subject=subject,
+        plain_text_content=plain_content,
+        html_content=html_content
+    )
+
+
+    # Use your full file path
+    pdf_path = "/Users/maneesharahul/Desktop/codes/PromoCodeGen_ESC/promocode_genapp/promocode_gen/static/images/promocode.pdf"
+
+    try:
+        with open(pdf_path, 'rb') as f:
+            data = f.read()
+            encoded = base64.b64encode(data).decode()
+
+            attachment = Attachment(
+                FileContent(encoded),
+                FileName('PromoDetails.pdf'),  # Name shown in the email
+                FileType('application/pdf'),
+                Disposition('attachment')
+            )
+            message.attachment = attachment
+    except FileNotFoundError:
+        print(f"[ERROR] File not found: {pdf_path}")
+    except Exception as e:
+        print(f"[ERROR] Failed to attach file: {e}")
+
+    try:
+        sg = SendGridAPIClient(api_key=SENDGRID_API_KEY)
+        response = sg.send(message)
+        print(f"[INFO] Email sent to {email}, status code: {response.status_code}")
+    except Exception as e:
+        print(f"[ERROR] SendGrid error: {e}")
+
+
 
 def home(request):
     qr_data = request.build_absolute_uri('/scan/')
@@ -82,19 +148,7 @@ def scan_qr(request):
             promo_code=promo_code
         )
 
-        subject = "Your Promo Code!"
-        from_email = "digital@thecollectroom.com"
-        to_email = [email]
-
-        text_content = f"Hi {name}, your promo code is: {promo_code}"
-        html_content = render_to_string('promo_email.html', {
-            'name': name,
-            'promo_code': promo_code,
-        })
-
-        msg = EmailMultiAlternatives(subject, text_content, from_email, to_email)
-        msg.attach_alternative(html_content, "text/html")
-        msg.send()
+        send_promo_email(name, email, promo_code)
 
         request.session['email'] = email
         request.session['promo_code'] = promo_code

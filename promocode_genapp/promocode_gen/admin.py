@@ -3,5 +3,5 @@ from .models import PromoSubmission
 
 @admin.register(PromoSubmission)
 class PromoSubmissionAdmin(admin.ModelAdmin):
-    list_display = ('name', 'email', 'promo_code', 'created_at')
+    list_display = ('name', 'email','contact','promo_code', 'created_at')
     search_fields = ('name', 'email')
