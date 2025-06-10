@@ -97,7 +97,16 @@
 </style>
 
 <div class="container">
-  <h1>Get Your 15% Promo Code</h1>
+  <div class="container" style="text-align: center; padding: 1rem;">
+    <h1>Get Your 15% Promo Code</h1>
+    <div style="display: flex; justify-content: center; align-items: center; gap: 1rem; margin-bottom: 0rem;">
+      <img src="{% static 'images/1.png' %}" alt="Logo 1" style="height: 100px;" />
+      
+      <div style="height: 55px; border-left: 3.1px solid #000;"></div>
+      
+      <img src="{% static 'images/logo2.jpg' %}" alt="Logo 2" style="height: 120px;" />
+    </div>
+  </div>
 
   <form method="POST" novalidate>
     {% csrf_token %}
