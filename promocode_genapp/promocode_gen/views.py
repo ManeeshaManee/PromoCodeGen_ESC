@@ -45,7 +45,7 @@ def is_valid_country(country):
 
 
 def send_promo_email(name, email, promo_code):
-    SENDGRID_API_KEY = ''
+    SENDGRID_API_KEY = 
     subject = "Your Promo Code!"
     from_email = "digital@thecollectroom.com"  # Must be verified in SendGrid
 
